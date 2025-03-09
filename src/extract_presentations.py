@@ -4,9 +4,6 @@
 このスクリプトは、NLP-2025/index.htmlから「一般発表」
 の情報（セッション情報、発表ID、タイトル、PDF URL、著者情報、サマリー）を抽出して、
 CSVファイル（presentations.csv）に書き出します。
-
-※本サンプルはnlp2025_program_head.htmlのHTML構造を参考にしており、
-   実際のNLP-2025/index.htmlの構造が同様である前提です。
 """
 
 import csv

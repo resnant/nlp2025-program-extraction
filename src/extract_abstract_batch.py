@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# このスクリプトはハードコードされたディレクトリ "NLP-2025/pursed_text" 内の全テキストファイルを再帰的に処理し、
+# このスクリプトはディレクトリ "NLP-2025/pursed_text" 内の全テキストファイルを再帰的に処理し、
 # 各ファイルから「概要」部分を抽出して、同名のテキストファイルとして "NLP-2025/pursed_text_summary" に保存します。
 import os
 import re

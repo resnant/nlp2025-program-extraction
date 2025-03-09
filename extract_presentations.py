@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-このスクリプトは、nlp2025_program.htmlから「一般発表」
-の情報（セッション情報、発表ID、タイトル、PDF URL、著者情報）を抽出して、
+このスクリプトは、NLP-2025/index.htmlから「一般発表」
+の情報（セッション情報、発表ID、タイトル、PDF URL、著者情報、サマリー）を抽出して、
 CSVファイル（presentations.csv）に書き出します。
 
 ※本サンプルはnlp2025_program_head.htmlのHTML構造を参考にしており、
-   実際のnlp2025_program.htmlの構造が同様である前提です。
+   実際のNLP-2025/index.htmlの構造が同様である前提です。
 """
 
 import csv
+import os
 from bs4 import BeautifulSoup
 
 def extract_general_presentations(html_file):
@@ -60,24 +61,33 @@ def extract_general_presentations(html_file):
                 tds = row2.find_all("td")
                 authors = tds[1].get_text(strip=True) if len(tds) >= 2 else ""
                 
+                # 発表サマリーの取得
+                summary_file = os.path.join("NLP-2025", "pursed_text_summary", presentation_id + ".txt")
+                try:
+                    with open(summary_file, encoding="utf-8") as sf:
+                        summary = sf.read().strip()
+                except FileNotFoundError:
+                    summary = ""
+                
                 presentations.append({
                     "session": current_session,
                     "id": presentation_id,
                     "title": title,
                     "url": pdf_url,
-                    "authors": authors
+                    "authors": authors,
+                    "summary": summary
                 })
     return presentations
 
 def write_csv(presentations, csv_file):
-    fieldnames = ["session", "id", "title", "url", "authors"]
+    fieldnames = ["session", "id", "title", "url", "authors", "summary"]
     with open(csv_file, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(presentations)
 
 if __name__ == "__main__":
-    html_file = "nlp2025_program.html"  # 対象のHTMLファイル名
+    html_file = "NLP-2025/index.html"  # 対象のHTMLファイル名
     csv_file = "presentations.csv"        # 出力先CSVファイル名
     
     presentations = extract_general_presentations(html_file)
